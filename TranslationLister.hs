@@ -3,7 +3,7 @@ module TranslationLister where
 import Control.Monad ( forM )
 import System.Directory ( getDirectoryContents, doesFileExist, doesDirectoryExist )
 import System.FilePath ( (</>) )
-import Data.List ( isSuffixOf, stripPrefix )
+import Data.List ( isSuffixOf, stripPrefix, groupBy )
 
 -- Directly lifted from http://book.realworldhaskell.org/read/io-case-study-a-library-for-searching-the-filesystem.html
 getRecursiveContents :: FilePath -> IO [FilePath]
@@ -53,5 +53,23 @@ resxFileLanguage fp =
         else
           TranslationLanguage afterLastDot
 
+stripLanguage :: TranslationLanguage -> FilePath -> FilePath
+stripLanguage DefaultLanguage p = p
+stripLanguage (TranslationLanguage l) p =
+  case withoutSuffix (('.' : l) ++ ".resx") p of
+    Nothing -> p -- Technically shouldn't happen
+    Just q -> q
        
+resxFileGroups :: [FilePath] -> [[(FilePath, TranslationLanguage)]]
+resxFileGroups items =
+  let mappedWithLanguage =
+        map (\p ->
+              let fl = resxFileLanguage p in
+              (p, fl, stripLanguage fl p)) items in
+  let compareOnBasePath (_, _, basePath1) (_, _, basePath2) =
+        basePath1 == basePath2 in
+  let withoutBasePath (p, lang, _) = (p, lang) in
+  let grouped = groupBy compareOnBasePath mappedWithLanguage in
+  map (map withoutBasePath) grouped
+
 
