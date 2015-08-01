@@ -5,7 +5,7 @@ import System.Environment ( getArgs )
 import System.Exit ( exitWith, ExitCode( ExitFailure ) )
 import System.IO ( hPutStrLn, stderr )
 import System.Directory ( getDirectoryContents, doesFileExist, doesDirectoryExist )
-import System.FilePath
+import System.FilePath ( (</>) )
 
 -- Directly lifted from http://book.realworldhaskell.org/read/io-case-study-a-library-for-searching-the-filesystem.html
 getRecursiveContents :: FilePath -> IO [FilePath]
