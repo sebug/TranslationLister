@@ -4,7 +4,7 @@ import System.Environment ( getArgs )
 import System.IO ( hPutStrLn, stderr )
 import System.Exit ( exitWith, ExitCode( ExitFailure ) )
 
-import TranslationLister
+import TranslationLister ( getResxFiles )
 
 main :: IO ()
 main = do
@@ -14,7 +14,7 @@ main = do
           hPutStrLn stderr "Usage: TranslationLister sourceDirectory"
           exitWith (ExitFailure 1)
     (dir : _) -> do
-      cts <- getRecursiveContents dir
+      cts <- getResxFiles dir
       putStrLn (show $ cts)
 
 
