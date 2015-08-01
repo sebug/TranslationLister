@@ -1,8 +1,9 @@
 module Main where
 
 import System.Environment ( getArgs )
-import System.Exit (exitWith, ExitCode( ExitFailure ) )
+import System.Exit ( exitWith, ExitCode( ExitFailure ) )
 import System.IO ( hPutStrLn, stderr )
+import System.Directory ( getDirectoryContents )
 
 main :: IO ()
 main = do
@@ -11,5 +12,8 @@ main = do
     [] -> do
           hPutStrLn stderr "Usage: TranslationLister sourceDirectory"
           exitWith (ExitFailure 1)
-    (dir : _) -> putStrLn dir
+    (dir : _) -> do
+      cts <- getDirectoryContents dir
+      putStrLn (show $ head cts)
+
 

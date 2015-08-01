@@ -20,6 +20,7 @@ executable TranslationLister
   main-is:             Main.hs
   -- other-modules:       
   -- other-extensions:    
-  build-depends:       base >=4.7 && <4.8
+  build-depends:       base >=4.7 && <4.8,
+                       directory >= 1.2.3.0
   -- hs-source-dirs:      
   default-language:    Haskell2010
